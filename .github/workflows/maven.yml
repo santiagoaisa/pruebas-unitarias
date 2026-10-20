@@ -1,4 +1,4 @@
-name: CI Pipeline (GitHub Flow)
+name: MAVEN
 
 on:
   push:
