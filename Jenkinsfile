@@ -15,7 +15,11 @@ pipeline {
                     steps {
                        sh 'env | sort'
                        withSonarQubeEnv('sonarqube-jenkis'){
-                       sh './mvnw sonar:sonar -Dsonar.branch.name=test'
+                            script{
+                                def branchName = GIT_BRANCH.split('/').last()
+                                sh "./mvnw sonar:sonar -Dsonar.branch.name=${branchName}"
+                            }
+
                        }
                     }
                 }
