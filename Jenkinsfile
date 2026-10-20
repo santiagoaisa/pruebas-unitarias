@@ -5,7 +5,7 @@ pipeline {
         stage('Test') {
             steps {
                 sh 'java --version'
-                sh 'mvnw clean test'
+                sh './mvnw clean test'
             }
         }
     }
