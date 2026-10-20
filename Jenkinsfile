@@ -16,10 +16,8 @@ pipeline {
                        sh 'env | sort'
                        withSonarQubeEnv('sonarqube-jenkis'){
                             script{
-
                                 // Remueve 'origin/' del inicio si existe, preservando 'feature/sonarqube'
                                 def branchName = env.GIT_BRANCH ? env.GIT_BRANCH.replaceFirst('^origin/', '') : 'main'
-
                                 sh "./mvnw sonar:sonar -Dsonar.branch.name=${branchName}"
                             }
 
