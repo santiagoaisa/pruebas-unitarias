@@ -7,6 +7,7 @@ pipeline {
                 sh 'java --version'
                 sh 'chmod +x mvnw'
                 sh './mvnw clean test'
+                junit 'target/surefire-reports/*.xml'
             }
         }
     }
