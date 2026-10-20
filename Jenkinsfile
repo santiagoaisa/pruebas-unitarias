@@ -11,5 +11,12 @@ pipeline {
                 jacoco()
             }
         }
+        stage('SonarQube') {
+                    steps {
+                       withSonarQubeEnv('sonarqube-jenkis'){
+                       sh './mvnw sonar:sonar'
+                       }
+                    }
+                }
     }
 }
