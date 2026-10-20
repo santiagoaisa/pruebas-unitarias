@@ -1,28 +1,49 @@
-name: Java CI with Maven
+name: CI Pipeline (GitHub Flow)
 
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - main
+      - 'feature/**'
+      - 'fix/**'
   pull_request:
-    branches: [ "main" ]
+    branches:
+      - main
 
 jobs:
-  build:
+  build-and-analyze:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Chequear el código del repositorio
-      uses: actions/checkout@v4
+      # Step 1: Descargar el código del repositorio
+      - name: Checkout del código
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Requerido por SonarQube para analizar el historial de commits
 
-    - name: Configurar Java 17
-      uses: actions/setup-java@v4
-      with:
-        java-version: '17'
-        distribution: 'temurin'
-        cache: maven
+      # Step 2: Configurar el entorno de Java 17
+      - name: Configurar Java 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
 
-    - name: Dar permisos de ejecución al wrapper
-      run: chmod +x mvnw
+      # Step 3: Dar permisos al Maven Wrapper
+      - name: Permisos de ejecución
+        run: chmod +x mvnw
 
-    - name: Compilar y ejecutar pruebas con Maven
-      run: ./mvnw clean test
+      # STEP 1 SOLICITADO: Compilación y Pruebas Unitarias
+      - name: Step 1 - Compilar y ejecutar pruebas unitarias
+        run: ./mvnw clean test
+
+      # STEP 2 SOLICITADO: Análisis de Calidad con SonarQube
+      - name: Step 2 - Ejecutar análisis en SonarQube
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+        run: |
+          ./mvnw sonar:sonar \
+            -Dsonar.projectKey=pruebas-unitarias \
+            -Dsonar.projectName=pruebas-unitarias \
+            -Dsonar.branch.name=${{ github.ref_name }}
