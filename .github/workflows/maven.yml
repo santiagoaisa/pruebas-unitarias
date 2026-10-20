@@ -40,8 +40,8 @@ jobs:
       # STEP 2 SOLICITADO: Análisis de Calidad con SonarQube
       - name: Step 2 - Ejecutar análisis en SonarQube
         env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+          SONAR_TOKEN: sqa_aa92d8dbac770faad637da5ecb191157318fe6ab
+          SONAR_HOST_URL: http://190.233.44.248
         run: |
           ./mvnw sonar:sonar \
             -Dsonar.projectKey=pruebas-unitarias \
