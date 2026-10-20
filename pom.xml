@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.mycompany.app</groupId>
     <artifactId>pruebas-unitarias</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.4-SNAPSHOT</version>
     <name>pruebas-unitarias</name>
     <description>pruebas-unitarias</description>
     <url/>
