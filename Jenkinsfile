@@ -2,10 +2,10 @@ pipeline {
     agent any
 
     stages {
-        stage('Hello') {
+        stage('Test') {
             steps {
                 sh 'java --version'
-                sh 'ls -la'
+                sh 'mvnw clean test'
             }
         }
     }
