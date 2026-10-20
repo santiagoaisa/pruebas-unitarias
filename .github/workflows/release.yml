@@ -3,21 +3,20 @@ name: Publicar Version Release
 on:
   push:
     tags:
-      - 'v*.*.*'  # Se activa automáticamente al hacer push de tags como v1.0.0, v1.1.0, etc.
+      - 'v*.*.*'
+      - 'v*.*.*-*'
 
 permissions:
-  contents: write  # Otorga permisos para subir artefactos y crear la Release en GitHub
+  contents: write
 
 jobs:
   build-and-release:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Obtener el código fuente del repositorio
       - name: Checkout del código
         uses: actions/checkout@v4
 
-      # Step 2: Configurar el entorno de Java 17
       - name: Configurar JDK 17
         uses: actions/setup-java@v4
         with:
@@ -25,22 +24,26 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      # Step 3: Otorgar permisos de ejecución al ejecutable de Maven
       - name: Permisos para Maven Wrapper
         run: chmod +x mvnw
 
-      # Step 4: Compilar el proyecto y empaquetar el archivo .jar
+      # OPCIÓN 1: Actualiza la versión del pom.xml quitando la "v" del tag (v1.0.2 -> 1.0.2)
+      - name: Actualizar versión en pom.xml
+        run: |
+          VERSION=${GITHUB_REF_NAME#v}
+          ./mvnw versions:set -DnewVersion=$VERSION -DgenerateBackupPoms=false
+
+      # Compila con la versión ya actualizada
       - name: Compilar y generar paquete (.jar)
         run: ./mvnw clean package -DskipTests
 
-      # Step 5: Crear la Release formal en GitHub y adjuntar el archivo .jar
       - name: Crear GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           name: Release ${{ github.ref_name }}
           tag_name: ${{ github.ref_name }}
           draft: false
-          prerelease: false
+          prerelease: ${{ contains(github.ref_name, '-') }}
           files: target/*.jar
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
