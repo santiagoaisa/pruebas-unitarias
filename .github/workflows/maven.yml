@@ -41,7 +41,7 @@ jobs:
       - name: Step 2 - Ejecutar análisis en SonarQube
         env:
           SONAR_TOKEN: sqa_aa92d8dbac770faad637da5ecb191157318fe6ab
-          SONAR_HOST_URL: http://190.233.44.248
+          SONAR_HOST_URL: http://190.233.44.248:9000
         run: |
           ./mvnw sonar:sonar \
             -Dsonar.projectKey=pruebas-unitarias \
