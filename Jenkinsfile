@@ -14,7 +14,7 @@ pipeline {
         stage('SonarQube') {
                     steps {
                        withSonarQubeEnv('sonarqube-jenkis'){
-                       sh './mvnw sonar:sonar'
+                       sh './mvnw sonar:sonar -Dsonar.branch.name=test'
                        }
                     }
                 }
