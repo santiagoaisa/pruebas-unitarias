@@ -28,6 +28,8 @@
     </scm>
     <properties>
         <java.version>17</java.version>
+        <sonar.projectKey>pruebas-unitarias</sonar.projectKey>
+        <sonar.projectName>pruebas-unitarias</sonar.projectName>
     </properties>
     <dependencies>
         <dependency>
